@@ -1,10 +1,8 @@
 package rsvpgo
 
 import (
-	"encoding/xml"
+	"bufio"
 	"fmt"
-	"github.com/laurent22/ical-go"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -29,24 +27,29 @@ func rsvpget_twipla_checkurl(url string) bool {
 	}
 }
 
-func rsvpget_twipla_parse(data string) {
-
+func rsvpget_twipla_parse(data string) (rsvp *Rsvp) {
+	lines := strings.Split(data, "\n")
+	for _, line := range lines {
+		fmt.Printf("%s\n", line)
+	}
+	return nil
 }
 
 func rsvpget_twipla(url string) (rsvp *Rsvp) {
 	if rsvpget_twipla_checkurl(url) == false {
 		return nil
 	}
-	if resp, err := http.Get(url); err == nil {
+
+	if resp, err := http.Get(url + "/.ics"); err == nil {
 		resp.Body.Close()
 		return nil
 	} else {
 		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return nil
-		}
-		ical.ParseCalendarNode
+		br := bufio.NewReader(resp.Body)
 
+		for line, err := br.ReadString('\n'); err != nil; line, err = br.ReadString('\n') {
+			fmt.Printf("%s", line)
+		}
 	}
+	return nil
 }
