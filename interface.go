@@ -16,7 +16,7 @@ type Rsvp struct {
 }
 
 func RsvpGet(url string) (rsvp *Rsvp) {
-	return nil
+	return rsvpget_twipla(url)
 }
 
 func rsvpget_twipla_checkurl(url string) bool {
@@ -39,8 +39,8 @@ func rsvpget_twipla(url string) (rsvp *Rsvp) {
 	if rsvpget_twipla_checkurl(url) == false {
 		return nil
 	}
-
 	if resp, err := http.Get(url + "/.ics"); err == nil {
+		fmt.Printf("%s\n", err.Error)
 		resp.Body.Close()
 		return nil
 	} else {
@@ -48,7 +48,7 @@ func rsvpget_twipla(url string) (rsvp *Rsvp) {
 		br := bufio.NewReader(resp.Body)
 
 		for line, err := br.ReadString('\n'); err != nil; line, err = br.ReadString('\n') {
-			fmt.Printf("%s", line)
+			fmt.Printf("asdf %s\n", line)
 		}
 	}
 	return nil
