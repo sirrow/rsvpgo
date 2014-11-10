@@ -97,17 +97,18 @@ func rsvpget_tweetvite(url string) (rsvp *Rsvp) {
 		tv.EventName = t.Title
 		tv.EventVenue = t.Location.Location_name + " " + t.Location.Location_address
 
-		year, _ := strconv.Atoi(t.Date.Start_date[0:4])
-		month, _ := strconv.Atoi(t.Date.Start_date[5:7])
-		mon := time.Month(month)
-		day, _ := strconv.Atoi(t.Date.Start_date[8:10])
-		hour, _ := strconv.Atoi(t.Date.Start_time[0:2])
-		min, _ := strconv.Atoi(t.Date.Start_time[3:5])
-		sec, _ := strconv.Atoi(t.Date.Start_time[6:8])
-		eventdate_local := time.Date(year, mon, day, hour, min, sec, 0, time.Local)
-		eventdate := eventdate_local.In(time.UTC)
-		tv.EventDate = eventdate
-
+		if len(t.Date.Start_date) != 0 {
+			year, _ := strconv.Atoi(t.Date.Start_date[0:4])
+			month, _ := strconv.Atoi(t.Date.Start_date[5:7])
+			mon := time.Month(month)
+			day, _ := strconv.Atoi(t.Date.Start_date[8:10])
+			hour, _ := strconv.Atoi(t.Date.Start_time[0:2])
+			min, _ := strconv.Atoi(t.Date.Start_time[3:5])
+			sec, _ := strconv.Atoi(t.Date.Start_time[6:8])
+			eventdate_local := time.Date(year, mon, day, hour, min, sec, 0, time.Local)
+			eventdate := eventdate_local.In(time.UTC)
+			tv.EventDate = eventdate
+		}
 		return tv
 	}
 	return nil
@@ -150,15 +151,17 @@ func rsvpget_twipla(url string) (rsvp *Rsvp) {
 			} else if strcmp_from_beginning_of_line(sline, "DTSTART:") {
 				idx := strings.Index(sline, ":")
 				datestr := sline[idx+1:]
-				year, _ := strconv.Atoi(datestr[0:4])
-				month, _ := strconv.Atoi(datestr[4:6])
-				mon := time.Month(month)
-				day, _ := strconv.Atoi(datestr[6:8])
-				hour, _ := strconv.Atoi(datestr[9:11])
-				min, _ := strconv.Atoi(datestr[11:13])
-				sec, _ := strconv.Atoi(datestr[13:15])
-				eventdate := time.Date(year, mon, day, hour, min, sec, 0, time.UTC)
-				tp.EventDate = eventdate
+				if len(datestr) != 0 {
+					year, _ := strconv.Atoi(datestr[0:4])
+					month, _ := strconv.Atoi(datestr[4:6])
+					mon := time.Month(month)
+					day, _ := strconv.Atoi(datestr[6:8])
+					hour, _ := strconv.Atoi(datestr[9:11])
+					min, _ := strconv.Atoi(datestr[11:13])
+					sec, _ := strconv.Atoi(datestr[13:15])
+					eventdate := time.Date(year, mon, day, hour, min, sec, 0, time.UTC)
+					tp.EventDate = eventdate
+				}
 			} else if strcmp_from_beginning_of_line(sline, "SUMMARY:") {
 				idx := strings.Index(sline, ":")
 				tp.EventName = sline[idx+1:]
