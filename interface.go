@@ -13,8 +13,8 @@ import (
 )
 
 type Rsvp struct {
-	Url         string
 	ServiceName string
+	EventId     string
 	EventName   string
 	EventDate   time.Time
 	EventVenue  string
@@ -37,7 +37,7 @@ type Twvt_xml struct {
 }
 
 func (r Rsvp) String() string {
-	return r.Url + " " + r.ServiceName + " " + r.EventName + " " + r.EventDate.String() + " " + r.EventVenue
+	return r.ServiceName + " " + r.EventId + " " + r.EventName + " " + r.EventDate.String() + " " + r.EventVenue
 }
 
 func RsvpGet(url string) (rsvp *Rsvp) {
@@ -89,7 +89,7 @@ func rsvpget_tweetvite(url string) (rsvp *Rsvp) {
 	} else {
 		defer resp.Body.Close()
 		tv := &Rsvp{}
-		tv.Url = url
+		tv.EventId = id
 		tv.ServiceName = "tweetvite"
 		t := Twvt_xml{"", Twvt_date{"", ""}, Twvt_location{"", ""}}
 		body, _ := ioutil.ReadAll(resp.Body)
@@ -132,7 +132,8 @@ func rsvpget_twipla(url string) (rsvp *Rsvp) {
 	} else {
 		defer resp.Body.Close()
 		tp := &Rsvp{}
-		tp.Url = url
+		idx := strings.LastIndex(url, "/")
+		tp.EventId = url[idx+1:]
 		tp.ServiceName = "twipla"
 		br := bufio.NewReader(resp.Body)
 		for {
