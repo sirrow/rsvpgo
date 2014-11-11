@@ -72,6 +72,8 @@ func tweetvite_getid(url string) (id string) {
 func rsvpget_tweetvite_checkurl(url string) bool {
 	if strcmp_from_beginning_of_line(url, "http://tweetvite.com/event/") {
 		return true
+	} else if strcmp_from_beginning_of_line(url, "http://twvt.us/") {
+		return true
 	} else {
 		return false
 	}
