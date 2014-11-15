@@ -20,20 +20,20 @@ type Rsvp struct {
 	EventVenue  string
 }
 
-type Twvt_date struct {
+type twvt_date struct {
 	Start_date string `xml:"start_date"`
 	Start_time string `xml:"start_time"`
 }
 
-type Twvt_location struct {
+type twvt_location struct {
 	Location_name    string `xml:"location_name"`
 	Location_address string `xml:"location_address"`
 }
 
-type Twvt_xml struct {
+type twvt_xml struct {
 	Title    string        `xml:"title"`
-	Date     Twvt_date     `xml:"date"`
-	Location Twvt_location `xml:"location"`
+	Date     twvt_date     `xml:"date"`
+	Location twvt_location `xml:"location"`
 }
 
 func (r Rsvp) String() string {
@@ -93,7 +93,7 @@ func rsvpget_tweetvite(url string) (rsvp *Rsvp) {
 		tv := &Rsvp{}
 		tv.EventId = id
 		tv.ServiceName = "tweetvite"
-		t := Twvt_xml{"", Twvt_date{"", ""}, Twvt_location{"", ""}}
+		t := twvt_xml{"", twvt_date{"", ""}, twvt_location{"", ""}}
 		body, _ := ioutil.ReadAll(resp.Body)
 		xml.Unmarshal(body, &t)
 		tv.EventName = t.Title
