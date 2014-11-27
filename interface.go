@@ -86,7 +86,6 @@ func rsvpget_tweetvite(url string) (rsvp *Rsvp) {
 	id := tweetvite_getid(url)
 	if resp, err := http.Get("http://tweetvite.com/api/1.0/rest/events/event?public_id=" + id + "&format=xml"); err != nil {
 		fmt.Printf("%s\n", err.Error)
-		resp.Body.Close()
 		return nil
 	} else {
 		defer resp.Body.Close()
