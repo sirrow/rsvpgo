@@ -20,6 +20,14 @@ type Rsvp struct {
 	EventVenue  string
 }
 
+func (r *Rsvp) GetEventName() string {
+	if r.EventName == "" {
+		return "(EventNameisNotSet)"
+	} else {
+		return r.EventName
+	}
+}
+
 type twvt_date struct {
 	Start_date string `xml:"start_date"`
 	Start_time string `xml:"start_time"`
